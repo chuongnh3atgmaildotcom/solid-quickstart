@@ -1,0 +1,20 @@
+version: "3"
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: vitro-app-solid
+    ports:
+      - "8443:3000"
+    entrypoint: npm run dev -- --no-reject-unauthorized
+    environment:
+      - NODE_TLS_REJECT_UNAUTHORIZED=0
+    # env_file: .dev.env
+    working_dir: /usr/src/app
+    command: "npm run dev"
+    volumes:
+      - ./:/app:delegated
+      - /var/www/data/yarn/cache:/usr/local/share/.cache/yarn:delegated
+      - /var/www/data/npm:/root/.npm:delegated
+      - ./netlify-config.json:/home/root/.config/netlify/config.json:delegated
